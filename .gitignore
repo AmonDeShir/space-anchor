@@ -8,7 +8,7 @@ node_modules
 # ---------------------- Server ----------------------
 target
 ~
-
+Cargo.lock
 
 # ---------------------- Client ----------------------
 # Compiled Object files
