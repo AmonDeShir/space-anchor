@@ -1,7 +1,8 @@
 [package]
-name = "server"
+name = "main"
 version = "0.1.0"
 edition = "2021"
+publish = false
 
 [profile.dev]
 opt-level = 1
@@ -10,4 +11,7 @@ opt-level = 1
 opt-level = 3
 
 [dependencies]
-bevy = "0.10.1"
+bevy = { version = "0.10.1", default-features = false, features = ["bevy_asset"]}
+serde = "1.0.160"
+bevy_pkv = "0.7.0"
+bevy_renet = "0.0.7"
