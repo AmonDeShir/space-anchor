@@ -89,14 +89,7 @@ DerivedDataCache/*
 # Logs
 client/Saved/Logs/client.log
 
-# Unignore all ThirdParty libs
-!./client/ThirdParty/*
 
 # ---------------------- Documentation ----------------------
 # Draw.io files
 *.bkp
-
-
-# Added by cargo
-
-/target

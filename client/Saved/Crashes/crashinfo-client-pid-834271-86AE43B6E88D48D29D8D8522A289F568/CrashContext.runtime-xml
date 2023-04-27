@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<FGenericCrashContext>
+	<RuntimeProperties>
+		<CrashVersion>3</CrashVersion>
+		<ExecutionGuid>C2D03E1425FD4C67B5FB4C390604620E</ExecutionGuid>
+		<CrashGUID>UECC-Linux-8995330C43154159A46FCEB30CD245A9_0000</CrashGUID>
+		<IsEnsure>false</IsEnsure>
+		<IsStall>false</IsStall>
+		<IsAssert>false</IsAssert>
+		<CrashType>Crash</CrashType>
+		<ErrorMessage>Caught signal 11 Segmentation fault</ErrorMessage>
+		<CrashReporterMessage />
+		<ProcessId>834271</ProcessId>
+		<SecondsSinceStart>0</SecondsSinceStart>
+		<IsInternalBuild>false</IsInternalBuild>
+		<IsPerforceBuild>false</IsPerforceBuild>
+		<IsSourceDistribution>false</IsSourceDistribution>
+		<GameName>UE-client</GameName>
+		<ExecutableName>UnrealEditor</ExecutableName>
+		<BuildConfiguration>Development</BuildConfiguration>
+		<GameSessionID />
+		<PlatformName>LinuxEditor</PlatformName>
+		<PlatformNameIni>Linux</PlatformNameIni>
+		<EngineMode>Editor</EngineMode>
+		<EngineModeEx>Unset</EngineModeEx>
+		<DeploymentName />
+		<EngineVersion>5.1.0-23058290+++UE5+Release-5.1</EngineVersion>
+		<CommandLine>/home/amon/Projects/space-anchor/client/client.uproject</CommandLine>
+		<LanguageLCID>0</LanguageLCID>
+		<AppDefaultLocale>en_GB</AppDefaultLocale>
+		<BuildVersion>++UE5+Release-5.1-CL-23058290</BuildVersion>
+		<Symbols>**UE5*Release-5.1-CL-23058290-Linux-Development</Symbols>
+		<IsUERelease>true</IsUERelease>
+		<IsRequestingExit>false</IsRequestingExit>
+		<UserName />
+		<BaseDir>/media/data/unreal5/Engine/Binaries/Linux/</BaseDir>
+		<RootDir>/media/data/unreal5/</RootDir>
+		<MachineId>54FD6F568AA74168BFFA9AD2E795153A-000003E8</MachineId>
+		<LoginId>54fd6f568aa74168bffa9ad2e795153a-000003e8</LoginId>
+		<EpicAccountId />
+		<SourceContext />
+		<UserDescription />
+		<UserActivityHint />
+		<CrashDumpMode>0</CrashDumpMode>
+		<GameStateName />
+		<Misc.NumberOfCores>4</Misc.NumberOfCores>
+		<Misc.NumberOfCoresIncludingHyperthreads>8</Misc.NumberOfCoresIncludingHyperthreads>
+		<Misc.Is64bitOperatingSystem>1</Misc.Is64bitOperatingSystem>
+		<Misc.CPUVendor>AuthenticAMD</Misc.CPUVendor>
+		<Misc.CPUBrand>AMD Ryzen 3 3100 4-Core Processor</Misc.CPUBrand>
+		<Misc.PrimaryGPUBrand>NVIDIA GeForce GTX 1660 (NVIDIA UNIX x86_64 Kernel Module 530.</Misc.PrimaryGPUBrand>
+		<Misc.OSVersionMajor>Manjaro Linux</Misc.OSVersionMajor>
+		<Misc.OSVersionMinor>6.2.10-1-MANJARO</Misc.OSVersionMinor>
+		<MemoryStats.TotalPhysical>16720064512</MemoryStats.TotalPhysical>
+		<MemoryStats.TotalVirtual>34359734272</MemoryStats.TotalVirtual>
+		<MemoryStats.PageSize>4096</MemoryStats.PageSize>
+		<MemoryStats.TotalPhysicalGB>16</MemoryStats.TotalPhysicalGB>
+		<MemoryStats.AvailablePhysical>3615932416</MemoryStats.AvailablePhysical>
+		<MemoryStats.AvailableVirtual>23061475328</MemoryStats.AvailableVirtual>
+		<MemoryStats.UsedPhysical>1596989440</MemoryStats.UsedPhysical>
+		<MemoryStats.PeakUsedPhysical>1596989440</MemoryStats.PeakUsedPhysical>
+		<MemoryStats.UsedVirtual>11040362496</MemoryStats.UsedVirtual>
+		<MemoryStats.PeakUsedVirtual>11086770176</MemoryStats.PeakUsedVirtual>
+		<MemoryStats.bIsOOM>0</MemoryStats.bIsOOM>
+		<MemoryStats.OOMAllocationSize>0</MemoryStats.OOMAllocationSize>
+		<MemoryStats.OOMAllocationAlignment>0</MemoryStats.OOMAllocationAlignment>
+		<NumMinidumpFramesToIgnore>0</NumMinidumpFramesToIgnore>
+		<CallStack />
+		<PCallStack>libUnrealEditor-Renet 0x00007f3b26fc6000 + 24bda libUnrealEditor-CoreUObject 0x00007f3c71400000 + 4bc19d libUnrealEditor-CoreUObject 0x00007f3c71400000 + 8319aa libUnrealEditor-CoreUObject 0x00007f3c71400000 + 70f7ae libUnrealEditor-Core 0x00007f3c71e00000 + a9e922 libUnrealEditor-Core 0x00007f3c71e00000 + a7082d libUnrealEditor-Projects 0x00007f3c6bf1d000 + 3bfc1 libUnrealEditor-Projects 0x00007f3c6bf1d000 + 5411a libUnrealEditor-Projects 0x00007f3c6bf1d000 + 55fe2 UnrealEditor 0x0000000000200000 + 5f10f UnrealEditor 0x0000000000200000 + 5aa42 UnrealEditor 0x0000000000200000 + 48c72 libUnrealEditor-UnixCommonStartup 0x00007f3c731b9000 + 42d2 libc.so 0x00007f3c6702d000 + 23790 libc.so 0x00007f3c6702d000 + 2384a UnrealEditor 0x0000000000200000 + 351b9</PCallStack>
+		<PCallStackHash>D04C6ADDFDDC122DD58943FDE96123B0D0FD7F63</PCallStackHash>
+		<TimeOfCrash>638181505082150000</TimeOfCrash>
+		<bAllowToBeContacted>1</bAllowToBeContacted>
+		<PlatformFullName>Linux [Manjaro Linux 6.2.10-1-MANJARO 64b]</PlatformFullName>
+		<CPUBrand>AMD Ryzen 3 3100 4-Core Processor</CPUBrand>
+		<CrashReportClientVersion>1.0</CrashReportClientVersion>
+	</RuntimeProperties>
+	<PlatformProperties>
+		<CrashSignal>11</CrashSignal>
+		<CrashSignalName>Segmentation fault</CrashSignalName>
+		<PlatformCallbackResult>0</PlatformCallbackResult>
+		<CrashTrigger>0</CrashTrigger>
+	</PlatformProperties>
+	<EngineData>
+		<MatchingDPStatus>LinuxEditorNo errors</MatchingDPStatus>
+		<RHI.DriverDenylisted>false</RHI.DriverDenylisted>
+		<RHI.RHIName>Vulkan</RHI.RHIName>
+		<RHI.AdapterName>NVIDIA GeForce GTX 1660</RHI.AdapterName>
+		<RHI.UserDriverVersion>530.41</RHI.UserDriverVersion>
+		<RHI.InternalDriverVersion>530.41</RHI.InternalDriverVersion>
+		<RHI.DriverDate>01-01-01</RHI.DriverDate>
+		<RHI.FeatureLevel>SM5</RHI.FeatureLevel>
+		<RHI.GPUVendor>NVIDIA</RHI.GPUVendor>
+		<RHI.DeviceId>2184</RHI.DeviceId>
+		<DeviceProfile.Name>LinuxEditor</DeviceProfile.Name>
+	</EngineData>
+	<GameData />
+</FGenericCrashContext>

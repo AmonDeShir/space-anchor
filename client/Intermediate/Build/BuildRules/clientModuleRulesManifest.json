@@ -1,0 +1,10 @@
+{
+	"SourceFiles": [
+		"/home/amon/Projects/space-anchor/client/Source/client/client.Build.cs",
+		"/home/amon/Projects/space-anchor/client/Plugins/Renet/Source/ThirdParty/RenetLibrary/RenetLibrary.Build.cs",
+		"/home/amon/Projects/space-anchor/client/Plugins/Renet/Source/Renet/Renet.Build.cs",
+		"/home/amon/Projects/space-anchor/client/Source/client.Target.cs",
+		"/home/amon/Projects/space-anchor/client/Source/clientEditor.Target.cs"
+	],
+	"EngineVersion": "5.1.0"
+}
