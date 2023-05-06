@@ -17,7 +17,7 @@ pub struct AdmiralBundle {
 }
 
 impl AdmiralBundle {
-    fn new(name: &str, race: &str, fraction: &str) -> AdmiralBundle {
+    pub fn new(name: &str, race: &str, fraction: &str) -> AdmiralBundle {
         AdmiralBundle {
             admiral: Admiral,
             name: Name(name.to_string()),

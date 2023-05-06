@@ -5,12 +5,13 @@ use crate::networking::ServerMessage;
 use crate::player::ClientID;
 use crate::readable::components::Name;
 
-use super::{CurrentServerMessages, ClientMessage};
-use super::channel::Channel;
+use super::messages::ClientMessage;
 use std::str;
-use serde_json;
+use channels::Channel;
+use messages::{SendableMessage, ReceivableMessage, UnparsedMessages, ParsedMessages};
 
-pub fn handle_server_connection(
+/// This system handles Renet events, which sends connection requests to new players and removes the ClientID component from disconnected ones.
+pub fn handle_renet_server_events(
     mut server_events: EventReader<ServerEvent>,
     mut commands: Commands,
     mut server: ResMut<RenetServer>,
@@ -20,7 +21,7 @@ pub fn handle_server_connection(
         match event {
             ServerEvent::ClientConnected(id, _) => {
                 info!("Client connected: {}", id);
-                ServerMessage::RequestConnect().send(&mut server, *id).unwrap();
+                ServerMessage::RequestConnect.send(&mut server, *id).unwrap();
             }
             
             ServerEvent::ClientDisconnected(id) => {
@@ -29,7 +30,7 @@ pub fn handle_server_connection(
                 for (player, ClientID(player_id), Name(player_name)) in players.iter() {
                     if player_id == id {
                         info!("Player {} disconnected", player_name);
-                        commands.entity(player).despawn();
+                        commands.entity(player).remove::<ClientID>();
                         break;
                     }
                 }
@@ -38,7 +39,8 @@ pub fn handle_server_connection(
     }
 }
 
-pub fn server_recieve_messages(mut server: ResMut<RenetServer>, mut messages: ResMut<CurrentServerMessages>) {
+/// This system handles renet messages sended by client, convert them to string and pack them in the UnparsedMessages resource.
+pub fn handle_received_messages(mut server: ResMut<RenetServer>, mut messages: ResMut<UnparsedMessages>) {
     messages.clear();
     
     for client_id in server.clients_id().into_iter() {
@@ -51,21 +53,15 @@ pub fn server_recieve_messages(mut server: ResMut<RenetServer>, mut messages: Re
                 };
                 
                 info!("Recived: {}", str);
-                let client_message = serde_json::from_str(&str).unwrap();
-                messages.push((client_id, client_message));
-                
+                messages.push((client_id, String::from(str)));                
             }
         }
     }
 }
 
-pub fn server_ping_pong(mut server: ResMut<RenetServer>, mut messages: Res<CurrentServerMessages>) {
-    for (client, message) in messages.iter() {
-        match message {
-            ClientMessage::PING() => {
-                ServerMessage::PONG().send(&mut server, *client).unwrap();
-            },
-            _ => {}
-        }
+// This system handles ping requests from the client and sends pong responses to prevent client disconnection due to 10 minutes of inactivity.
+pub fn handle_ping_request(mut server: ResMut<RenetServer>, messages: Res<ParsedMessages<ClientMessage>>) {
+    if let Some((client, _)) = ClientMessage::PING.find(messages) {
+        ServerMessage::PONG.send(&mut server, client).unwrap();
     }
 }

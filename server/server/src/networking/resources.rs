@@ -1,20 +1,11 @@
-use bevy::prelude::*;
 use std::{net::UdpSocket, time::SystemTime};
 use bevy_renet::{renet::{RenetServer, RenetConnectionConfig, ServerConfig, ServerAuthentication}};
 use crate::version;
 
-use super::ClientMessage;
-
+/// Current version of the server api, Renet will use it to prevent connection with outdated clients.
 const PROTOCOL_ID: u64 = version!();
 
-#[derive(Debug, Default, Deref, DerefMut, Resource)]
-pub struct CurrentServerMessages(Vec<(u64, ClientMessage)>);
-
-#[derive(Debug)]
-pub enum SendError {
-    CannotSend,
-}
-
+/// Create new rent server, with default renet configuration.
 pub fn new_renet_server() -> RenetServer {
     let server_addr = "127.0.0.1:2137".parse().unwrap();
     let socket = UdpSocket::bind(server_addr).unwrap();
