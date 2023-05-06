@@ -69,7 +69,7 @@ pub trait SendableMessage: Serialize {
 
     /// Sends a message to client, but first checks if the message can be sent. If not, the message will not be sent and the function will return Err(SendError::CannotSend).
     fn send(&self, server: &mut RenetServer, id: u64) -> Result<(), SendError> {
-        if !server.can_send_message(id, Self::get_channel_id()) {
+        if server.can_send_message(id, Self::get_channel_id()) {
             
             let message = serde_json::to_string(self).unwrap();
             server.send_message(id, Self::get_channel_id(), message);
