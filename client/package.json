@@ -1,0 +1,27 @@
+{
+  "name": "client",
+  "packageManager": "yarn@3.5.1",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build"
+  },
+  "devDependencies": {
+    "typescript": "^5.0.4",
+    "vite": "^4.3.8",
+    "vite-plugin-solid": "^2.7.0"
+  },
+  "dependencies": {
+    "@babylonjs/core": "^6.4.1",
+    "@babylonjs/gui": "^6.4.1",
+    "@babylonjs/gui-editor": "^6.4.1",
+    "@babylonjs/inspector": "^6.4.1",
+    "@babylonjs/loaders": "^6.4.1",
+    "@babylonjs/materials": "^6.4.1",
+    "@babylonjs/serializers": "^6.4.1",
+    "@solidjs/router": "^0.8.2",
+    "bitecs": "^0.3.38",
+    "gsap": "^3.11.5",
+    "solid-js": "^1.7.5",
+    "solid-styled-components": "^0.28.5"
+  }
+}

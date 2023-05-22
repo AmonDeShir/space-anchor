@@ -1,0 +1,85 @@
+body {
+  width: 100vw;
+  height: 100vh;
+  padding: 0px;
+  margin: 0px;
+  font-family: "Fervojo";
+  color: var(--text);
+}
+
+#app {
+  width: 100%;
+  height: 100%;
+  position: relative;
+}
+
+#game {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  z-index: 1;
+}
+
+#ui {
+  position: absolute;
+  z-index: 2;
+}
+
+:root {
+  --main: #ff7b00;
+  --text: #ffffff;
+}
+
+@font-face {
+  font-family: 'Fervojo Bold';
+  font-style: normal;
+  src: local('Fervojo-Bold'), url(./fonts/Fervojo-Bold.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Fervojo Demi';
+  font-style: normal;
+  src: local('Fervojo-Demi'), url(./fonts/Fervojo-Demi.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Fervojo Light';
+  font-style: normal;
+  src: local('Fervojo-Light'), url(./fonts/Fervojo-Light.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Fervojo';
+  font-style: normal;
+  src: local('Fervojo-Regular'), url(./fonts/Fervojo-Regular.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Fervojo Thin';
+  font-style: normal;
+  src: local('Fervojo-Thin'), url(./fonts/Fervojo-Thin.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Mako';
+  font-style: normal;
+  src: local('Mako-Regular'), url(./fonts/Mako-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'New Rocker';
+  font-style: normal;
+  src: local('NewRocker-Regular'), url(./fonts/NewRocker-Regular.ttf) format('truetype');
+}
+
+@font-face {
+  font-family: 'Radiotechnika';
+  font-style: normal;
+  src: local('Radiotechnika'), url(./fonts/Radiotechnika.otf) format('opentype');
+}
+
+@font-face {
+  font-family: 'Wordclock';
+  font-style: normal;
+  src: local('WordclockStencilMono-Regular'), url(./fonts/WordclockStencilMono-Regular.otf) format('opentype');
+}
