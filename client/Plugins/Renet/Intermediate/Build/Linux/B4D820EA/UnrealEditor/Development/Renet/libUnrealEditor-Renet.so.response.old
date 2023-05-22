@@ -1,8 +1,0 @@
-"/home/amon/Projects/space-anchor/client/Plugins/Renet/Intermediate/Build/Linux/B4D820EA/UnrealEditor/Development/Renet/Renet.cpp.o"
- -soname="libUnrealEditor-Renet.so"
- -rpath="${ORIGIN}/../../../../../../../../../media/data/unreal5/../../../home/amon/Projects/space-anchor/client/Plugins/Renet/Binaries/ThirdParty/RenetLibrary/Linux/x86_64-unknown-linux-gnu"
- -rpath-link="/home/amon/Projects/space-anchor/client/Plugins/Renet/Binaries/Linux"
- -L"/home/amon/Projects/space-anchor/client/Plugins/Renet/Binaries/ThirdParty/RenetLibrary/Linux/x86_64-unknown-linux-gnu"
- -L"/media/data/unreal5/Engine/Binaries/Linux"
- --start-group
- --end-group
