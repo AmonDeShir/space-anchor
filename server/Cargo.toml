@@ -2,7 +2,6 @@
 resolver = "2"
 members = [
     "server",
-    "messages",
-    "channels",
-    "messages_derive",
+    "bevy_websocket_server",
+    "bevy_websocket_server_derive",
 ]

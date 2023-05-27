@@ -1,10 +1,10 @@
 [package]
-name = "messages_derive"
+name = "bevy_websocket_server_derive"
 version = "0.1.0"
 edition = "2021"
 
 [lib]
-name = "messages_derive"
+name = "bevy_websocket_server_derive"
 proc-macro = true
 
 [dependencies]

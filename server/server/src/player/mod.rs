@@ -2,12 +2,11 @@ mod components;
 mod systems;
 mod messages;
 
+use bevy_websocket_server::{ParsedMessages, NetworkSystemSet, ReceivableMessage};
 pub use components::*;
 
 use bevy::prelude::*;
-use ::messages::{ParsedMessages, ReceivableMessage};
 
-use crate::networking::NetworkSystemSet;
 use self::{systems::{login, register}, messages::ClientMessage};
 
 /// Plugin that adds system for player creation and connection.

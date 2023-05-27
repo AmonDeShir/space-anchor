@@ -1,7 +1,6 @@
 use bevy::prelude::Resource;
+use bevy_websocket_server::{SendableMessage, ReceivableMessage};
 use serde::{Serialize, Deserialize};
-use messages::{SendableMessage, ReceivableMessage};
-use channels::Channel;
 
 /// All information needed to create a new player.
 #[derive(Deserialize, Debug, Clone, PartialEq)]

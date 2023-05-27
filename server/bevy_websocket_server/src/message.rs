@@ -1,9 +1,10 @@
-use bevy_renet::renet::RenetServer;
 use bevy::prelude::*;
-pub use messages_derive::*;
+pub use bevy_websocket_server_derive::*;
 use serde::{Serialize, de::DeserializeOwned};
 use serde_json;
 use core::fmt::Debug;
+
+use crate::Server;
 
 /// A Bevy resource that contains all messages received from clients as strings, paired with the corresponding client ID. This resource should be created once and used by the whole application.
 #[derive(Debug, Default, Deref, DerefMut, Resource)]
@@ -64,53 +65,21 @@ pub enum SendError {
 
 /// Trait with methods for sending messages to client.
 pub trait SendableMessage: Serialize {
-    /// Returns the id of the channel that the instance of this trait will be use to send messages
-    fn get_channel_id() -> u8;
-
-    /// Sends a message to client, but first checks if the message can be sent. If not, the message will not be sent and the function will return Err(SendError::CannotSend).
-    fn send(&self, server: &mut RenetServer, id: u64) -> Result<(), SendError> {
-        if server.can_send_message(id, Self::get_channel_id()) {
-            
-            let message = serde_json::to_string(self).unwrap();
-            server.send_message(id, Self::get_channel_id(), message);
-
-            Ok(())
-        }
-
-        else {
-            Err(SendError::CannotSend)
-        }
+    /// Sends a message to client
+    fn send(&self, server: &mut Server, id: &u64) {
+        let message = serde_json::to_string(self).unwrap();
+        server.send(&id, message);
     }
 
-    /// Sends a message to all clients, but first checks if the message can be sent to all clients. If not, the message will not be sent to any client, and the function will return Err(SendError::CannotSend).
-    fn broadcast(&self, server: &mut RenetServer) -> Result<(), SendError> {
-        for id in server.clients_id() {
-            if !server.can_send_message(id, Self::get_channel_id()) {
-                return Err(SendError::CannotSend);
-            }
-        }
-
-        let message = serde_json::to_string(self).unwrap();
-        server.broadcast_message(Self::get_channel_id(), message.as_bytes().to_vec());
-
-        Ok(())
+    /// Try sends a message to all clients
+    fn broadcast(&self, server: &mut Server) {
+        let message: String = serde_json::to_string(self).unwrap();
+        server.broadcast(message);
     }
 
-    /// Sends a message to all clients except one, but first checks if the message can be sent to all clients. If not, the message will not be sent to any client, and the function will return Err(SendError::CannotSend).
-    fn broadcast_except(&self, server: &mut RenetServer, id: u64) -> Result<(), SendError> {
-        for all_id in server.clients_id() {
-            if all_id == id {
-                continue;
-            }
-
-            if !server.can_send_message(id, Self::get_channel_id()) {
-                return Err(SendError::CannotSend);
-            }
-        }
-
-        let message = serde_json::to_string(self).unwrap();
-        server.broadcast_message_except(id, Self::get_channel_id(), message);
-
-        Ok(())
+    /// Sends a message to all clients except one
+    fn broadcast_except(&self, server: &mut Server, id: &u64) {
+        let message: String = serde_json::to_string(self).unwrap();
+        server.broadcast_except(id, message);
     }   
 }

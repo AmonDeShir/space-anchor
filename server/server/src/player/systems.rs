@@ -1,6 +1,5 @@
 use bevy::prelude::*;
-use bevy_renet::renet::RenetServer;
-use messages::{ParsedMessages, generate_finder, SendableMessage};
+use bevy_websocket_server::{Server, ParsedMessages, generate_finder, SendableMessage};
 
 use crate::{readable::components::Name, admiral::AdmiralBundle};
 
@@ -17,7 +16,7 @@ use super::{messages::{ClientMessage, ServerMessage}, Player, ClientID};
 ///
 /// If a player with the requested name does not exist, it sends a `RequestRegistration` message to the client.
 pub fn login(
-    mut server: ResMut<RenetServer>, 
+    mut server: ResMut<Server>, 
     mut commands: Commands,
     messages: Res<ParsedMessages<ClientMessage>>,
     logged_players: Query<(&Player, &Name), With<ClientID>>,
@@ -25,7 +24,7 @@ pub fn login(
 ) {
     if let Some((user, player_name)) = generate_finder!(ClientMessage::Connect, messages) {
         if logged_players.into_iter().find(|(_, Name(name))| name == player_name).is_some() {
-            ServerMessage::ConnectionFailed("Player already connected!".to_string()).send(&mut server, *user).unwrap();
+            ServerMessage::ConnectionFailed("Player already connected!".to_string()).send(&mut server, user);
             return;
         }
 
@@ -33,11 +32,11 @@ pub fn login(
             Some((_, entity, _)) => {
                 commands.entity(entity).insert(ClientID(*user));
 
-                ServerMessage::PlayerJoined(player_name.clone()).broadcast_except(&mut server, *user).unwrap();                
-                ServerMessage::ConnectionSuccess.send(&mut server, *user).unwrap();
+                ServerMessage::PlayerJoined(player_name.clone()).broadcast_except(&mut server, user);                
+                ServerMessage::ConnectionSuccess.send(&mut server, user);
             },
             None => {
-                ServerMessage::RequestRegistration.send(&mut server, *user).unwrap();
+                ServerMessage::RequestRegistration.send(&mut server, user);
             }
         }
     }
@@ -49,20 +48,20 @@ pub fn login(
 /// If the name is unique, it creates a new player entity and broadcasts a PlayerJoined message to all clients except the new one. 
 /// Finally, it sends a ConnectionSuccess message to the new client to confirm successful registration.
 pub fn register(
-    mut server: ResMut<RenetServer>, 
+    mut server: ResMut<Server>, 
     mut commands: Commands,
     messages: Res<ParsedMessages<ClientMessage>>,
     players: Query<(&Player, &Name)>
 ) {
     if let Some((user, data)) = generate_finder!(ClientMessage::Register, messages) {
         if players.into_iter().find(|(_, Name(name))| name == &data.name).is_some() {
-            ServerMessage::RegistrationFailed("Player with that name already exist".to_string()).send(&mut server, *user).unwrap();
+            ServerMessage::RegistrationFailed("Player with that name already exist".to_string()).send(&mut server, user);
             return;
         }
 
         commands.spawn((Player, AdmiralBundle::new(&data.name, &data.race, "free traders")));
 
-        ServerMessage::PlayerJoined(data.name.clone()).broadcast_except(&mut server, *user).unwrap();                
-        ServerMessage::ConnectionSuccess.send(&mut server, *user).unwrap();
+        ServerMessage::PlayerJoined(data.name.clone()).broadcast_except(&mut server, user);                
+        ServerMessage::ConnectionSuccess.send(&mut server, user);
     }
 }
