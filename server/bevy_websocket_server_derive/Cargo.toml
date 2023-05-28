@@ -1,0 +1,12 @@
+[package]
+name = "bevy_websocket_server_derive"
+version = "0.1.0"
+edition = "2021"
+
+[lib]
+name = "bevy_websocket_server_derive"
+proc-macro = true
+
+[dependencies]
+quote = "1.0.26"
+syn = { version = "2.0.15" }
