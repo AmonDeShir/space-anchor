@@ -8,6 +8,7 @@ export const Position = defineComponent(Vector3);
 export const Rotation = defineComponent(Vector3);
 
 export const meshQuery = defineQuery([Position, Rotation, Mesh]);
+export const allMeshQuery = defineQuery([Mesh]);
 
 export function addMeshComponent(eid: number, mesh: Babylon.Mesh, pos = Babylon.Vector3.Zero(), rot = Babylon.Quaternion.Zero()) {
   addComponent(world, Mesh, eid);
@@ -25,6 +26,11 @@ export function addMeshComponent(eid: number, mesh: Babylon.Mesh, pos = Babylon.
   world.objects[eid] = mesh;
 }
 
+export function addStaticMeshComponent(eid: number, mesh: Babylon.Mesh) {
+  addComponent(world, Mesh, eid);
+  world.objects[eid] = mesh;
+}
+
 function findUnusedKeys(elements: { [key: number]: Babylon.Mesh }, actual: number[]) {
   const unused = {...elements};
   
@@ -36,7 +42,7 @@ function findUnusedKeys(elements: { [key: number]: Babylon.Mesh }, actual: numbe
 }
 
 export function meshDispatcherSystem(world: BabylonWorld) {
-  const unused = findUnusedKeys(world.objects, meshQuery(world));
+  const unused = findUnusedKeys(world.objects, allMeshQuery(world));
 
   for (const eid of Object.keys(unused) as unknown as number[]) {
     world.objects[eid].dispose();

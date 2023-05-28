@@ -6,6 +6,7 @@ import { Inspector } from '@babylonjs/inspector';
 import { debugInfoPipeline } from "./debug-info/debug-info";
 import { createEffect } from "solid-js";
 import { Store } from "../store/store";
+import { addSkybox } from "./skybox";
 
 export const world = createWorld(createBabylonWorld());
  
@@ -21,13 +22,15 @@ function rotateBox(world: BabylonWorld) {
   return world;
 }
 
-
 export function createGame(world: BabylonWorld) {
   const pipeline = pipe(meshPipeline, rotateBox, debugInfoPipeline);
 
+  addSkybox(world, "skybox/galaxy2/galaxy");
+
   const box = addEntity(world);
   addMeshComponent(box, Babylon.MeshBuilder.CreateBox("box1", { width: 0.5, height: 0.5, depth: 0.5 }, world.scene));
-  
+
+
   Inspector.Show(world.scene, {});
   world.scene.debugLayer.hide();
 
