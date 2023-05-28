@@ -34,9 +34,11 @@ pub fn login(
 
                 ServerMessage::PlayerJoined(player_name.clone()).broadcast_except(&mut server, user);                
                 ServerMessage::ConnectionSuccess.send(&mut server, user);
+                debug!("Login player {:?}", player_name);
             },
             None => {
                 ServerMessage::RequestRegistration.send(&mut server, user);
+                
             }
         }
     }
@@ -59,7 +61,9 @@ pub fn register(
             return;
         }
 
-        commands.spawn((Player, AdmiralBundle::new(&data.name, &data.race, "free traders")));
+        commands.spawn((Player, AdmiralBundle::new(&data.name, &data.race, "free traders"), ClientID(*user)));
+
+        debug!("Register player name: {:?}, race: {:?}", &data.name, &data.race);
 
         ServerMessage::PlayerJoined(data.name.clone()).broadcast_except(&mut server, user);                
         ServerMessage::ConnectionSuccess.send(&mut server, user);

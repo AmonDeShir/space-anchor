@@ -135,7 +135,7 @@ impl Server {
     /// Send a message to all clients except one.
     pub fn broadcast_except(&self, id: &u64, message: String) {
         for (connection_id, connection) in self.connections.iter() { 
-            if id == connection_id {
+            if *id == *connection_id {
                 continue;
             }
 

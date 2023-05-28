@@ -23,10 +23,10 @@ pub fn handle_server_events(
         info!("Client disconnected: {}", id);
 
         for (player, ClientID(player_id), Name(player_name)) in players.iter() {
-            if player_id == id {
+            if *player_id == *id {
                 info!("Player {} disconnected", player_name);
                 commands.entity(player).remove::<ClientID>();
-                ServerMessage::Disconnected.broadcast_except(&mut server, id);
+                ServerMessage::Disconnected(player_name.clone()).broadcast_except(&mut server, id);
             }
         }
     }

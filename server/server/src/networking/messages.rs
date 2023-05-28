@@ -9,5 +9,5 @@ pub enum ServerMessage {
     RequestConnect,
 
     /// Message sent to clients when a logged-in player disconnects.
-    Disconnected,
+    Disconnected(String),
 }
