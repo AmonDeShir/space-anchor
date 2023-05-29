@@ -20,15 +20,15 @@ impl CellId {
 
 #[derive(Resource)]
 pub struct Map {
-  dimension_size: i32,
+  dimension_size: f32,
   cells: HashMap<CellId, HashMap<Entity, Vec2>>,
   entities: HashMap<Entity, CellId>
 }
 
 impl Map {
-  pub fn new(dimension_size: i32) -> Map {
+  pub fn new(dimension_size: f32) -> Map {
     Map {
-      dimension_size: dimension_size,
+      dimension_size,
       cells: HashMap::new(),
       entities: HashMap::new()
     }
@@ -39,7 +39,7 @@ impl Map {
   /// * `id` - The reference to the entity to be placed.
   /// * `pos` - The position vector where the entity should be placed (`Vec2`).
   ///
-  pub fn add(&self, id: &Entity, pos: Vec2) -> CellId {
+  pub fn add(&mut self, id: &Entity, pos: Vec2) -> CellId {
     let cell_id = self.pos_to_cell(&pos);
     let cell = self.cells.entry(cell_id).or_insert_with(HashMap::new);
 
@@ -50,8 +50,8 @@ impl Map {
 
   /// Converts a world position to a corresponding cell ID.
   fn pos_to_cell(&self, pos: &Vec2) -> CellId {
-    let x = pos.x.floor() as i32;
-    let y = pos.y.floor() as i32;
+    let x = (pos.x / self.dimension_size).floor() as i32;
+    let y = (pos.y / self.dimension_size).floor() as i32;
 
     return CellId::new(x, y);
   }
@@ -87,10 +87,10 @@ impl Map {
   /// * `id` - The reference to the entity to be updated.
   /// * `pos` - The new position vector for the entity (`Vec2`).
   pub fn update(&mut self, id: &Entity, pos: Vec2) -> Option<CellId> {
+    let new_cell_id = self.pos_to_cell(&pos);
+
     if let Some(entity_cell) = self.entities.get_mut(id) {
       let old_cell_id = *entity_cell;
-      let new_cell_id = self.pos_to_cell(&pos);
-
       let cell = self.cells.get_mut(&old_cell_id).expect("Map's cell does not exist!");
 
       if old_cell_id != new_cell_id {
@@ -122,7 +122,7 @@ impl Map {
   pub fn nearby(&self, id: &Entity, radius: f32) -> Vec<(Entity, Vec2)> {
     let mut entities = vec![];
 
-    if let Some(cell_id) = self.entities.get_mut(&id) {
+    if let Some(cell_id) = self.entities.get(&id) {
       let center = self.force_get(cell_id, id);
       let cells = self.get_cells(&self.get_id_of_nearby_cells(cell_id, &radius));
 
@@ -153,7 +153,7 @@ impl Map {
   /// This function will panic if the specified cell does not exist or if it does not contain the searched entity.
   ///
   fn force_get(&self, cell_id: &CellId, id: &Entity) -> Vec2 {
-    *self.cells.get_mut(cell_id).expect("Map's cell does not exist!").get(id).expect("Map's cell does not contains searched entity!") 
+    *self.cells.get(cell_id).expect("Map's cell does not exist!").get(id).expect("Map's cell does not contains searched entity!") 
   }
 
 
@@ -178,7 +178,7 @@ impl Map {
   /// * `radius` - The reference to the radius value (`f32`).
   ///
   fn get_id_of_nearby_cells(&self, id: &CellId, radius: &f32) -> Vec<CellId> {
-    let radius = radius.round() as i32;
+    let radius = (radius / self.dimension_size).round() as i32;
 
     let min_x = id.x - radius;
     let min_y = id.y - radius;
