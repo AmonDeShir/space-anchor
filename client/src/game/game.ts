@@ -1,35 +1,20 @@
-import { createWorld, pipe, addEntity } from "bitecs";
 import { BabylonWorld, createBabylonWorld } from "./babylon";
-import { Rotation, addMeshComponent, meshPipeline, meshQuery } from "./mesh/mesh";
 import * as Babylon from "@babylonjs/core";
 import { Inspector } from '@babylonjs/inspector';
-import { debugInfoPipeline } from "./debug-info/debug-info";
+import { updateDebugInfo } from "./debug-info/debug-info";
 import { createEffect } from "solid-js";
 import { Store } from "../store/store";
-import { addSkybox } from "./skybox";
+import { addMap } from "./map/map";
 
-export const world = createWorld(createBabylonWorld());
+export let world: BabylonWorld;
  
-function rotateBox(world: BabylonWorld) {
-  const eids = meshQuery(world); 
-  let i = -1;
 
-  for (const id of eids) {
-    Rotation.y[id] += 0.1 * i  * world.engine.getDeltaTime(); 
-    i *= -1;
-  }
+export async function createGame() {
+  world = await createBabylonWorld();
 
-  return world;
-}
+  let box = Babylon.MeshBuilder.CreateBox("box1", { width: 0.5, height: 0.5, depth: 0.5 }, world.scene);
 
-export function createGame(world: BabylonWorld) {
-  const pipeline = pipe(meshPipeline, rotateBox, debugInfoPipeline);
-
-  addSkybox(world, "skybox/galaxy2/galaxy");
-
-  const box = addEntity(world);
-  addMeshComponent(box, Babylon.MeshBuilder.CreateBox("box1", { width: 0.5, height: 0.5, depth: 0.5 }, world.scene));
-
+  addMap(world);
 
   Inspector.Show(world.scene, {});
   world.scene.debugLayer.hide();
@@ -47,7 +32,7 @@ export function createGame(world: BabylonWorld) {
 
 
   const renderLoop = () => {
-    pipeline(world);
+    updateDebugInfo(world);
     world.scene.render();
   };
 
