@@ -1,32 +1,40 @@
-use bevy::{prelude::{Resource, Vec2, Entity}, utils::HashMap};
+use std::hash::Hash;
 
-pub const TILE_SIZE: usize = 1;
+use bevy::{prelude::{Resource, Vec2}, utils::HashMap};
 
-#[derive(Eq, PartialEq, Hash, Clone, Copy)]
+/// ID of a single map cell
+#[derive(Eq, Debug, PartialEq, Hash, Clone, Copy)]
 pub struct CellId {
   pub x: i32,
   pub y: i32,
 }
 
 impl CellId {
-  pub fn new(x: i32, y: i32) -> CellId {
-    CellId {
-      x,
-      y
+    /// Creates a new CellId with the given cell position
+    pub fn new(x: i32, y: i32) -> CellId {
+        CellId { x, y }
     }
-  }
 }
 
-
+/// Represents grid-like structure that stores entities of type `T` at specific positions.
+///
+/// The `Map` struct utilizes the "Spatial Hash Grids" data structure to efficiently organize and retrieve entities based on their positions.
+/// It provides methods for adding, removing, updating, and querying entities within the map, allowing for fast retrieval of entities in proximity.
 #[derive(Resource)]
-pub struct Map {
+pub struct Map<T: PartialEq + Eq + Hash + Copy> {
   dimension_size: f32,
-  cells: HashMap<CellId, HashMap<Entity, Vec2>>,
-  entities: HashMap<Entity, CellId>
+  cells: HashMap<CellId, HashMap<T, Vec2>>,
+  entities: HashMap<T, CellId>
 }
 
-impl Map {
-  pub fn new(dimension_size: f32) -> Map {
+impl<T: PartialEq + Eq + Hash + Copy> Map<T> {
+    /// Creates a new map.
+    /// 
+    /// Arguments:
+    /// 
+    /// * `dimension_size` - The size of a single map cell.
+    /// 
+  pub fn new(dimension_size: f32) -> Map<T> {
     Map {
       dimension_size,
       cells: HashMap::new(),
@@ -36,14 +44,17 @@ impl Map {
 
   /// Places an entity in the world at the specified position and returns the ID of the cell where the entity is placed.
   ///
-  /// * `id` - The reference to the entity to be placed.
+  /// ## Arguments
+  /// 
+  /// * `id` - The ID of the entity to be placed.
   /// * `pos` - The position vector where the entity should be placed (`Vec2`).
   ///
-  pub fn add(&mut self, id: &Entity, pos: Vec2) -> CellId {
+  pub fn add(&mut self, id: &T, pos: Vec2) -> CellId {
     let cell_id = self.pos_to_cell(&pos);
     let cell = self.cells.entry(cell_id).or_insert_with(HashMap::new);
 
     cell.insert(*id, pos);
+    self.entities.insert(*id, cell_id);
 
     return cell_id;
   }
@@ -59,9 +70,11 @@ impl Map {
   /// Removes an entity from the map. If the entity is the last item in its cell, the cell is also removed.
   ///
   /// It does nothing if the entity is not present in the map.
-  ///
-  /// * `id` - The reference to the entity to be removed.
-  pub fn remove(&mut self, id: &Entity) {
+  /// 
+  /// ## Arguments
+  /// 
+  /// * `id` - The ID of the entity to be removed.
+  pub fn remove(&mut self, id: &T) {
     let cell_id = match self.entities.get(id) {
       Some(cell) => cell,
       None => return,
@@ -81,12 +94,16 @@ impl Map {
 
   /// Updates the position of an entity and, if necessary, moves it to the next cell.  
   ///
+  /// ## Returns
+  /// 
   /// Returns `Some(CellId)` if the entity changed cells, indicating the new cell ID.  
   /// Returns `None` if the entity is not present in the map or if the cell did not change.
   ///
-  /// * `id` - The reference to the entity to be updated.
+  /// ## Arguments
+  /// 
+  /// * `id` - The ID of the entity to be updated.
   /// * `pos` - The new position vector for the entity (`Vec2`).
-  pub fn update(&mut self, id: &Entity, pos: Vec2) -> Option<CellId> {
+  pub fn update(&mut self, id: &T, pos: Vec2) -> Option<CellId> {
     let new_cell_id = self.pos_to_cell(&pos);
 
     if let Some(entity_cell) = self.entities.get_mut(id) {
@@ -112,14 +129,16 @@ impl Map {
 
   /// Returns a list of entities within a specified radius of the given `id` element.
   ///
-  /// * `id` - The reference to the entity for which to find nearby entities.
+  /// ## Arguments
+  /// 
+  /// * `id` - The ID of the entity for which to find nearby entities.
   /// * `radius` - The radius within which to search for nearby entities.
   ///
   /// ## Returns
+  /// 
+  /// Returns a vector containing tuples of nearby entity IDs and their corresponding positions (`Vec<(T, Vec2)>`).
   ///
-  /// A vector containing tuples of nearby entities and their corresponding positions (`Vec<(Entity, Vec2)>`).
-  ///
-  pub fn nearby(&self, id: &Entity, radius: f32) -> Vec<(Entity, Vec2)> {
+  pub fn nearby(&self, id: &T, radius: f32) -> Vec<(T, Vec2)> {
     let mut entities = vec![];
 
     if let Some(cell_id) = self.entities.get(&id) {
@@ -127,7 +146,7 @@ impl Map {
       let cells = self.get_cells(&self.get_id_of_nearby_cells(cell_id, &radius));
 
       for (entity, pos) in cells {
-        if Map::is_in_circle(&center, &radius, &pos) {
+        if Map::<T>::is_in_circle(&center, &radius, &pos) {
           entities.push((entity, pos));
         }
       }
@@ -142,7 +161,7 @@ impl Map {
   /// ## Arguments
   ///
   /// * `cell_id` - The reference to the cell ID where the entity is located.
-  /// * `id` - The reference to the entity for which to retrieve the position.
+  /// * `id` - The ID of the entity for which to retrieve the position.
   ///
   /// ## Returns
   ///
@@ -152,13 +171,13 @@ impl Map {
   ///
   /// This function will panic if the specified cell does not exist or if it does not contain the searched entity.
   ///
-  fn force_get(&self, cell_id: &CellId, id: &Entity) -> Vec2 {
+  fn force_get(&self, cell_id: &CellId, id: &T) -> Vec2 {
     *self.cells.get(cell_id).expect("Map's cell does not exist!").get(id).expect("Map's cell does not contains searched entity!") 
   }
 
 
   /// Retrieves the entities and their positions from the specified cells.
-  fn get_cells(&self, cells: &Vec<CellId>) -> Vec<(Entity, Vec2)> {
+  fn get_cells(&self, cells: &Vec<CellId>) -> Vec<(T, Vec2)> {
     let mut result = vec![];
     
     for cell in cells.iter() {
@@ -173,6 +192,8 @@ impl Map {
   }
 
   /// Retrieves the IDs of the nearby cells within the specified radius of the given cell ID.
+  /// 
+  /// ## Arguments
   ///
   /// * `id` - The reference to the cell ID for which to retrieve nearby cell IDs.
   /// * `radius` - The reference to the radius value (`f32`).
@@ -197,10 +218,13 @@ impl Map {
   }
 
   /// Checks if a given position is within the specified circle defined by the center position and radius.
+  /// 
+  /// ## Arguments
   ///
   /// * `center` - The reference to the center position vector (`Vec2`).
   /// * `radius` - The reference to the radius value (`f32`).
   /// * `pos` - The reference to the position vector to be checked (`Vec2`).
+  /// 
   fn is_in_circle(center: &Vec2, radius: &f32, pos: &Vec2) -> bool {
     let pos = (*center - *pos).abs();
 
