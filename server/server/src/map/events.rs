@@ -1,15 +1,30 @@
-use bevy::prelude::{Entity, Vec2};
+use bevy::prelude::Vec2;
 
-use super::CellId;
+use super::{CellId, MapEntityId};
 
 /// Event emitted when an entity is spawned in the world, along with its initial position.
-pub struct EntitySpawned(pub Entity, pub Vec2);
+/// 
+/// ## Arguments
+/// 
+/// * `MapEntityId` - ID of the map entity.
+/// * `Vec2` - Position of the entity.
+/// 
+pub struct EntitySpawned(pub MapEntityId, pub Vec2);
 
 /// Event emitted when an entity is removed from the world.
-pub struct EntityRemoved(pub Entity);
+/// 
+/// ## Arguments
+///
+/// * `MapEntityId` - ID of the map entity.
+///
+pub struct EntityRemoved(pub MapEntityId);
 
 /// Event emitted when an entity changes its cell in the map, along with its new position and cell ID.
-pub struct EntityChangedCell(pub Entity, pub Vec2, pub CellId);
-
-/// Event emitted when an entity's position is updated in the world.
-pub struct EntityMoved(pub Entity, pub Vec2);
+/// 
+/// ## Arguments
+/// 
+/// * `MapEntityId` - ID of the map entity.
+/// * `Vec2` - Updated position of the entity.
+/// * `CellId` - I of the new entity's cell.
+/// 
+pub struct EntityChangedCell(pub MapEntityId, pub Vec2, pub CellId);
