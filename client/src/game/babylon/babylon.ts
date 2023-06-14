@@ -16,13 +16,15 @@ export async function createBabylonWorld(): Promise<BabylonWorld> {
   const canvas = document.querySelector<HTMLCanvasElement>("#game");
   let engine: Babylon.Engine;
   
-  try {
+  if (await Babylon.WebGPUEngine.IsSupportedAsync) {
     engine = new Babylon.WebGPUEngine(canvas);
     await (engine as Babylon.WebGPUEngine).initAsync();
   }
-  catch {
+  else {
     engine = new Babylon.Engine(canvas);
   }
+
+  engine = new Babylon.Engine(canvas);
 
   const scene = new Babylon.Scene(engine);
   const camera = new Babylon.FreeCamera("FreeCamera", new Babylon.Vector3(0, 0, 0), scene);
