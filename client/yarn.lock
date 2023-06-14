@@ -550,12 +550,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babylonjs/gui@npm:^6.4.1":
-  version: 6.4.1
-  resolution: "@babylonjs/gui@npm:6.4.1"
+"@babylonjs/gui@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "@babylonjs/gui@npm:6.5.0"
   peerDependencies:
     "@babylonjs/core": ^6.0.0
-  checksum: d3a9d70fc2d6c0c95686052217db2642ec20ff2fe41f0c703b2c2abed1e52064145f47177053bcb45fca2745b7acffde04e489116c8216000a34856bd0ef041b
+  checksum: ba30ccb2eb650b33f4e8987c7a8196c645fd43559c62ab0846d059255ba78142f409361ecc76643ec7b1e367ab387f90aec86730c372b4c3f1f6a540a3e84d45
   languageName: node
   linkType: hard
 
@@ -1359,7 +1359,7 @@ __metadata:
   resolution: "client@workspace:."
   dependencies:
     "@babylonjs/core": ^6.4.1
-    "@babylonjs/gui": ^6.4.1
+    "@babylonjs/gui": ^6.5.0
     "@babylonjs/gui-editor": ^6.4.1
     "@babylonjs/inspector": ^6.4.1
     "@babylonjs/loaders": ^6.4.1
