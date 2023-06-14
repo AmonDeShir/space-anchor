@@ -1,4 +1,4 @@
-import { createSignal } from "solid-js";
+import { createEffect, createResource, createSignal } from "solid-js";
 import { MainMenu } from "./menu/menu";
 import { BackgroundGradient, BackgroundImage } from "./main-menu.styles";
 import { Login } from "./login/login";
@@ -18,29 +18,30 @@ const MenuOptions = [
   "Exit",
 ];
 
-const Races = [
-  "Mortemii",
-  "Krushaz",
-  "Solis",
-  "Aquaformae",
-  "Drongarianii"
-];
-
-const Texts = {
-  "Mortemii": "Najbardziej zaawansowana cywilizacja. Nie wiadomo, z jakiej galaktyki pochodzą, sami nie pamiętają. Według samych siebie istnieją od zawsze i zawsze istnieć będą — rasa post transcendentna.",
-  "Krushaz": "Nazywają siebie zielone hopaki, są sztuczną rasą, stworzoną do prowadzenia wojen.",
-  "Solis": "Nazywają siebie terrans, rasa napływowa z sąsiadującej drogi mlecznej, pochodzą z układu słonecznego, ich planeta macierzysta to ziemia.",
-  "Aquaformae": "Jedna z dwóch inteligentnych nienapływowych ras zamieszkująca galaktykę Anchor,  pochodzą z wodnej planety. Ich statki są wypełnione wodą, urodzeni kupcy. Mają najlepsze statki transportowe.",
-  "Drongarianii": "Cywilizacja Drongarian opiera się mentalności roju gdzie każda istota jest połączona, często w dosłownym znaczeniu, z resztą kolonii. Każda istota w kolonii Drongarian jest dostosowana do wykonywania jednego zadania mającego zaspokoić potrzeby innych części Kolonii.",
-}
-
+type RacesFile = {
+  name: string,
+  image: string,
+  playable: boolean,
+  description: {
+    en: string,
+    pl: string,
+  }
+}[];
 
 export const MainMenuPage = () => {
   const [selected, setSelected] = createSignal<string | null>(null); 
   const [playerName, setPlayerName] = createSignal("");
-  const [playerRace, setPlayerRace] = createSignal(Races[0]);
+  const [playerRace, setPlayerRace] = createSignal("");
   const [needsRegistration, setNeedsRegistration] = createSignal(false);
   const navigate = useNavigate();
+
+  const [races] = createResource<RacesFile>(() => fetch("./data/races.json").then(data => data.json()));
+
+  createEffect(() => {
+    if (races() !== undefined && races().length > 0) {
+      setPlayerRace(races()[0].name);
+    }
+  });
 
   const connect = () => {
     if (needsRegistration()) {
@@ -126,8 +127,7 @@ export const MainMenuPage = () => {
           onBack={() => setSelected("Multiplayer")}
           onRegister={register}
           changeSelected={setSelected} 
-          texts={Texts}
-          races={Races}
+          races={races()}
         />
       </BackgroundGradient>
     </BackgroundImage>

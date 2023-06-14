@@ -1,0 +1,61 @@
+[
+  {
+    "name": "Mortemii",
+    "image": "/races/mortemii.png",
+    "playable": true,
+    "description": {
+      "en": "The most advanced civilization. It is unknown from which galaxy they originate, as they themselves do not remember. According to their own beliefs, they have existed forever and will always exist - a post-transcendent race.",
+      "pl": "Najbardziej zaawansowana cywilizacja. Nie wiadomo, z jakiej galaktyki pochodzą, sami nie pamiętają. Według samych siebie istnieją od zawsze i zawsze istnieć będą — rasa post transcendentna."
+    }
+  },
+
+  {
+    "name": "Krushaz",
+    "image": "/races/krushaz.png",
+    "playable": true,
+    "description": {
+      "en": "They call themselves green boyz; they are an artificially bred race, created for warfare.",
+      "pl": "Nazywają siebie zielone hopaki; są sztuczną rasą, stworzoną do prowadzenia wojen."
+    }
+  },
+
+  {
+    "name": "Solis",
+    "image": "/races/solis.png",
+    "playable": true,
+    "description": {
+      "en": "They call themselves Terrans, an influx race from the neighboring Milky Way, originating from the solar system, their home planet being Earth.",
+      "pl": "Nazywają siebie terrans, rasa napływowa z sąsiadującej drogi mlecznej, pochodzą z układu słonecznego, ich planeta macierzysta to ziemia."
+    }
+  },
+
+  {
+    "name": "Aquaformae",
+    "image": "/races/aquaformae.png",
+    "playable": true,
+    "description": {
+      "en": "One of the two intelligent non-influx races inhabiting the Anchor galaxy, they come from a water-based planet. Their ships are filled with water, born merchants. They have the best transport vessels.",
+      "pl": "Jedna z dwóch inteligentnych nienapływowych ras zamieszkujących galaktykę Anchor, pochodzą z wodnej planety. Ich statki są wypełnione wodą, urodzeni kupcy. Mają najlepsze statki transportowe."
+    }
+  },
+
+  {
+    "name": "Drongarianii",
+    "image": "/races/drongarianii.png",
+    "playable": true,
+    "description": {
+      "en": "The Drongarian civilization is based on a hive mentality, where every being is interconnected, often in a literal sense, with the rest of the colony. Each entity in the Drongarian colony is specialized to perform one task that meets the needs of other parts of the colony.",
+      "pl": "Cywilizacja Drongarian opiera się na mentalności roju, gdzie każda istota jest połączona, często w dosłownym znaczeniu, z resztą kolonii. Każda istota w kolonii Drongarian jest dostosowana do wykonywania jednego zadania mającego zaspokoić potrzeby innych części kolonii."
+    }
+  },
+
+  {
+    "name": "Silica Animus",
+    "image": "/races/silica_animus.png",
+    "playable": false,
+    "description": {
+      "en": "A race created by Solis, sent 500 years ago from the Milky Way to explore the Archor galaxy. It was a von Neumann probe, but something went wrong, and it broke its safeguards.",
+      "pl": "Rasa stworzona przez Solis, wysłali oni ją 500 lat temu z drogi mlecznej w celu zbadania galaktyki Archor, było to sonda von Neumanna, jednak coś poszło nie tak i złamała ona swoje zabezpieczenia."
+    }
+  }
+]

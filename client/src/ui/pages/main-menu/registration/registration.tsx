@@ -12,12 +12,20 @@ type Props = {
   onBack: () => void;
   onRaceChange: (name: string) => void;
   onRegister: () => void;
-  races: string[],
-  texts: { [key: string]: string },
+  races: Race[],
 }
 
 type PanelRef = { panel: HTMLElement, container: HTMLElement };
 
+type Race = {
+  name: string,
+  image: string,
+  playable: boolean,
+  description: {
+    en: string,
+    pl: string,
+  }
+};
 
 export const Registration = (props: Props) => {
   const [display, setDisplay] = createSignal(props.show);
@@ -85,8 +93,7 @@ export const Registration = (props: Props) => {
     }
   })
 
-  const image = createMemo(() => `/races/${[props.race.toLowerCase()]}.png`);
-
+  const race = createMemo(() => props.races?.find(race => race.name === props.race));
 
   return (
     <Show when={display()}>
@@ -101,7 +108,7 @@ export const Registration = (props: Props) => {
                 <PanelContent ref={setRefForAdv((ref, old) => ({...old, container: ref}), panelEnter, panelExit)}>
                   <TextContainer>
                     <Text>Select your race</Text>
-                    <Select items={props.races} onChange={props.onRaceChange} value={props.race} />
+                    <Select items={props.races.filter(race => race.playable).map(race => race.name)} onChange={props.onRaceChange} value={props.race} />
                   </TextContainer>
 
                   <Buttons>
@@ -116,11 +123,11 @@ export const Registration = (props: Props) => {
             <Panel>
                 <SmallPanelContent ref={setRefForAdv((ref, old) => ({...old, container: ref}), smallPanelEnter, smallPanelExit)}>
                   <ImageContainer>
-                    <Image src={image()} />
+                    <Image src={race()?.image ?? ""} />
                   </ImageContainer>
-                  <Title width="100%">{props.race}</Title>
+                  <Title width="100%">{race()?.name ?? props.race}</Title>
                   <div>
-                    {props.texts[props.race]}
+                    {race()?.description.en ?? "" }
                   </div>
                 </SmallPanelContent>
               </Panel>

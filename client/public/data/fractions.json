@@ -1,0 +1,65 @@
+{
+  "Kingdom of Mortemii": {
+    "name": {
+      "en": "Kingdom of Mortemii",
+      "pl": "Królestwo Mortemii"
+    },
+    "color": "#3bd0a8"
+  },
+
+  "Krushaz": {
+    "name": {
+      "en": "Krushaz",
+      "pl": "Krushaz"
+    },
+    "color": "#d32023"
+  },
+
+  "Solis Federation": {
+    "name": {
+      "en": "Solis Federation",
+      "pl": "Federacja Solis"
+    },
+    "color": "#cfbc1a"
+  },
+
+  "Aquaformae Union": {
+    "name": {
+      "en": "Aquaformae Union",
+      "pl": "Unia Aquaformae"
+    },
+    "color": "#7facb8"
+  },
+
+  "Drongarianii Dominion": {
+    "name": {
+      "en": "Drongarianii Dominion",
+      "pl": "Dominium Drongarianii'tańskie"
+    },
+    "color": "#a8bd16"
+  },
+  
+  "BOB Legion": {
+    "name": {
+      "en": "BOB Legion",
+      "pl": "Legion BOB'a"
+    },
+    "color": "#a301dd"
+  },
+  
+  "Bandits": {
+    "name": {
+      "en": "Bandits",
+      "pl": "Bandyci"
+    },
+    "color": "#ff0000"
+  },
+
+  "Free Traders": {
+    "name": {
+      "en": "Free Traders",
+      "pl": "Wolni Handlarze"
+    },
+    "color": "#ff7b00"
+  }
+}
