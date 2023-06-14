@@ -80,6 +80,31 @@ export const MainMenuPage = () => {
     }
   }
 
+  window.addEventListener("keydown", (ev) => {
+    // Shift+R
+    if (ev.shiftKey && ev.key === 'R') {
+      Networking.on("RequestConnect", () => {
+        Networking.send({ "Connect": "Amon" })
+      })
+  
+      Networking.on("RequestRegistration", () => {
+        Networking.send({ "Register": { name: "Amon", race: "solis" } })
+      })
+  
+      Networking.on("ConnectionSuccess", () => {
+        if (window.location.pathname == '/') {
+          return;
+        }
+        
+        setTimeout(() => {
+          Store.setOther("shouldRender", true);
+          window.location.href = '/game';
+        }, 1000)
+      })
+  
+      setTimeout(() => Networking.connect(), 200);
+    }
+  });
 
   return (
     <BackgroundImage>

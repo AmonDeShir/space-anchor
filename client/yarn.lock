@@ -550,12 +550,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babylonjs/gui@npm:^6.4.1":
-  version: 6.4.1
-  resolution: "@babylonjs/gui@npm:6.4.1"
+"@babylonjs/gui@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "@babylonjs/gui@npm:6.5.0"
   peerDependencies:
     "@babylonjs/core": ^6.0.0
-  checksum: d3a9d70fc2d6c0c95686052217db2642ec20ff2fe41f0c703b2c2abed1e52064145f47177053bcb45fca2745b7acffde04e489116c8216000a34856bd0ef041b
+  checksum: ba30ccb2eb650b33f4e8987c7a8196c645fd43559c62ab0846d059255ba78142f409361ecc76643ec7b1e367ab387f90aec86730c372b4c3f1f6a540a3e84d45
   languageName: node
   linkType: hard
 
@@ -589,12 +589,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@babylonjs/materials@npm:^6.4.1":
-  version: 6.4.1
-  resolution: "@babylonjs/materials@npm:6.4.1"
+"@babylonjs/materials@npm:^6.5.0":
+  version: 6.5.0
+  resolution: "@babylonjs/materials@npm:6.5.0"
   peerDependencies:
     "@babylonjs/core": ^6.0.0
-  checksum: 237f390174eaae617f8104ac4f0cf37bec340bb9506dc3cb7799c875f7e1fde5f59fd299a9a3e9a72a4001c15d3608c19a0e0d8d91becd7c86296213806fe8f4
+  checksum: 81ae22b06f7633f19c0fca051804a2fafb1545eeb533e98525eae85af39e345cffcd9ee0bb7acfc7568ddcaee2bd2e31ca2f2e3fb8c072dd028e37502f6e6606
   languageName: node
   linkType: hard
 
@@ -1263,13 +1263,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"bitecs@npm:^0.3.38":
-  version: 0.3.38
-  resolution: "bitecs@npm:0.3.38"
-  checksum: 8e77f98fc1c180bbd0f05e83e1926e5f65bdb941d8060886a5c43b61cf139d0448e31f6037bb6d5216d3e825372bacb9283a00b2d482d769d99c37bf3e08bcb2
-  languageName: node
-  linkType: hard
-
 "brace-expansion@npm:^1.1.7":
   version: 1.1.11
   resolution: "brace-expansion@npm:1.1.11"
@@ -1366,14 +1359,13 @@ __metadata:
   resolution: "client@workspace:."
   dependencies:
     "@babylonjs/core": ^6.4.1
-    "@babylonjs/gui": ^6.4.1
+    "@babylonjs/gui": ^6.5.0
     "@babylonjs/gui-editor": ^6.4.1
     "@babylonjs/inspector": ^6.4.1
     "@babylonjs/loaders": ^6.4.1
-    "@babylonjs/materials": ^6.4.1
+    "@babylonjs/materials": ^6.5.0
     "@babylonjs/serializers": ^6.4.1
     "@solidjs/router": ^0.8.2
-    bitecs: ^0.3.38
     dev: ^0.1.3
     gsap: ^3.11.5
     solid-devtools: ^0.27.0

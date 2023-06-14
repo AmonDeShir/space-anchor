@@ -1,8 +1,7 @@
 use bevy::prelude::*;
-use bevy_websocket_server::{Server, ParsedMessages, generate_finder, SendableMessage};
+use bevy_websocket_server::{Server, ParsedMessages, generate_finder, SendableMessage, ReceivableMessage};
 
-use crate::{readable::components::Name, admiral::AdmiralBundle};
-
+use crate::{readable::components::Name, admiral::{AdmiralBundle, Admiral}, map::{MapEntityMoveTarget, EntitySpawned, MapEntityId}};
 use super::{messages::{ClientMessage, ServerMessage}, Player, ClientID};
 
 /// This system handles the client login request.
@@ -20,7 +19,7 @@ pub fn login(
     mut commands: Commands,
     messages: Res<ParsedMessages<ClientMessage>>,
     logged_players: Query<(&Player, &Name), With<ClientID>>,
-    available_players: Query<(&Player, Entity, &Name), Without<ClientID>>
+    available_players: Query<(&Player, Entity, &Name), Without<ClientID>>,
 ) {
     if let Some((user, player_name)) = generate_finder!(ClientMessage::Connect, messages) {
         if logged_players.into_iter().find(|(_, Name(name))| name == player_name).is_some() {
@@ -47,12 +46,13 @@ pub fn login(
 /// This system handles the client registration request. 
 /// 
 /// It searches for players with the same name and if found, it returns a RegistrationFailed message to the client. 
-/// If the name is unique, it creates a new player entity and broadcasts a PlayerJoined message to all clients except the new one. 
+/// If the name is unique, it creates a new player entity, sends EntitySpawned event and broadcasts a PlayerJoined message to all clients except the new one. 
 /// Finally, it sends a ConnectionSuccess message to the new client to confirm successful registration.
 pub fn register(
     mut server: ResMut<Server>, 
     mut commands: Commands,
     messages: Res<ParsedMessages<ClientMessage>>,
+    mut spawn_ev: EventWriter<EntitySpawned>, 
     players: Query<(&Player, &Name)>
 ) {
     if let Some((user, data)) = generate_finder!(ClientMessage::Register, messages) {
@@ -61,11 +61,44 @@ pub fn register(
             return;
         }
 
-        commands.spawn((Player, AdmiralBundle::new(&data.name, &data.race, "free traders"), ClientID(*user)));
+        let admiral = AdmiralBundle::new(&data.name, &data.race, "free traders");
+        let id = admiral.id();
+        let entity: bevy::ecs::system::EntityCommands = commands.spawn((Player, admiral, ClientID(*user)));
+
+        spawn_ev.send(EntitySpawned(MapEntityId::new(entity.id(), &id), Vec2::ZERO));
 
         debug!("Register player name: {:?}, race: {:?}", &data.name, &data.race);
 
         ServerMessage::PlayerJoined(data.name.clone()).broadcast_except(&mut server, user);                
         ServerMessage::ConnectionSuccess.send(&mut server, user);
+    }
+}
+
+/// This system handles the MoveTo request.
+/// 
+/// It adds a new instance of the `MapEntityMoveTarget` component to the entity in order to force the `Map` plugin 
+/// to update the player's position and rotation until it reaches the requested position.
+pub fn request_move_player(
+    mut commands: Commands,
+    messages: Res<ParsedMessages<ClientMessage>>,
+    players: Query<(Entity, &ClientID)>
+) {
+    if let Some((user, data)) = generate_finder!(ClientMessage::MoveTo, messages) {
+        if let Some((entity, _)) = players.iter().find(|(_, ClientID(id))| *id == *user) {
+            commands.entity(entity).insert(MapEntityMoveTarget(*data, 2.0));
+        }
+    }
+}
+
+/// This system handles the GetPlayerAdmiralId request.
+pub fn request_admiral_id(
+    mut server: ResMut<Server>,
+    messages: Res<ParsedMessages<ClientMessage>>,
+    players: Query<(Entity, &ClientID, &Admiral)>
+) {
+    if let Some((user, _)) = ClientMessage::GetPlayerAdmiralId().find(messages) {
+        if let Some((_, _, Admiral(id))) = players.iter().find(|(_, ClientID(id), _)| *id == user) {
+            ServerMessage::PlayerAdmiralId(*id).send(&mut server, &user);
+        }
     }
 }
