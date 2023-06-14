@@ -1,20 +1,23 @@
-import { BabylonWorld, createBabylonWorld } from "./babylon";
-import * as Babylon from "@babylonjs/core";
-import { addInspctor, updateDebugInfo } from "./debug-info/debug-info";
+import { createBabylonWorld } from "./babylon/babylon";
+import { addBackToMainMenuShortcut, addInspector, updateDebugInfo } from "./debug-info/debug-info";
 import { createEffect } from "solid-js";
 import { Store } from "../store/store";
 import { addMap } from "./map/map";
+import { createCameraController } from "./camera/camera";
 
-export let world: BabylonWorld;
- 
+export const DEBUG_MOD = true;
 
+/** Creates a new game instance */ 
 export async function createGame() {
-  world = await createBabylonWorld();
+  const world = await createBabylonWorld();
 
-  let box = Babylon.MeshBuilder.CreateBox("box1", { width: 0.5, height: 0.5, depth: 0.5 }, world.scene);
-
+  createCameraController(world);
   addMap(world);
-  addInspctor(world);
+
+  if (DEBUG_MOD) {
+    addInspector(world);
+    addBackToMainMenuShortcut();  
+  }
 
   const renderLoop = () => {
     updateDebugInfo(world);
